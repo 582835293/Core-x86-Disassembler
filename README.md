@@ -35,3 +35,5 @@ ctest --test-dir build -C Debug --output-on-failure
 独立测试解码核心可用 `cmake -S . -B build -DCORE_X86_BUILD_DEMO=OFF`。演示默认使用内置数组；`RUN_MODE` 和 `TARGET_PATH` 在演示源文件顶部设置。
 
 公共调用契约见 [解码器接口](docs/decoder-api.md)，原理笔记见 [x86 反汇编引擎](x86反汇编引擎.md)。许可证沿用仓库已有 [MIT 文本](LICENSE.txt)。
+
+[构建与测试记录](docs/validation.md) · [GitHub Actions](https://github.com/582835293/Core-x86-Disassembler/actions)

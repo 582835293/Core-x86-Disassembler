@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.21)
 project(CoreX86Disassembler VERSION 1.0.0 LANGUAGES C)
 add_library(core_x86 STATIC disasm.c)
 target_include_directories(core_x86 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
