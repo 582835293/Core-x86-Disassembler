@@ -1,4 +1,4 @@
-#include "disasm.h"
+﻿#include "disasm.h"
 
 const GroupEntry group_tables[MAX_GROUPS + 1][MAX_REG_COUNT] = {
     // Group 1 (0x80 /0x81 /0x83)
@@ -295,7 +295,7 @@ const OpcodeEntry opcode_table[256] = {
     [0xc5] = {"LDS",0, HAS_MODRM, Gz, Mp, NONE, NULL},
     [0xc6] = {"MOV",0, HAS_MODRM, Eb, Ib, NONE, (GroupEntry*)group_tables[11]},
     [0xc7] = { "MOV",0, HAS_MODRM, Ev, Iz, NONE, (GroupEntry*)group_tables[11]},
-    [0xc8] = { "ENTER",0, 0, Iw, Ib, NONE, (GroupEntry*)group_tables[11]},
+    [0xc8] = { "ENTER",0, 0, Iw, Ib, NONE, NULL},
 	[0xc9] = { "LEAVE",0, 0, NONE, NONE, NONE, NULL },
     [0xca] = {"RETF",0, 0, Iw, NONE, NONE, NULL},
     [0xcb] = {"RETF",0, 0, NONE, NONE, NONE, NULL},
@@ -1380,6 +1380,7 @@ int ParseInstuction(uint8_t* buffer, uint32_t eip, DecodeContext* out_ctx) {
     if (IsImmediate(op1)) ParseImmediate(out_ctx, op1, imm_parse_idx++);
     if (IsImmediate(op2)) ParseImmediate(out_ctx, op2, imm_parse_idx++);
     if (IsImmediate(op3)) ParseImmediate(out_ctx, op3, imm_parse_idx++);
+    out_ctx->instr_len = out_ctx->pos;
 
     return out_ctx->pos;
 }

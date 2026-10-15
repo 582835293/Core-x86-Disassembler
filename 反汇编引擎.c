@@ -164,7 +164,7 @@ BOOL InitDisasmTarget(DisasmTarget* target, PVOID* pOutImageBuffer) {
         return TRUE;
     } else {
         PVOID pFileBuffer = NULL;
-        if (!ReadPEFile(TARGET_PATH, &pFileBuffer)) {
+        if (!ReadPEFile(_T(TARGET_PATH), &pFileBuffer)) {
             printf("[错误] 无法读取文件: %s\n", TARGET_PATH);
             return FALSE;
         }
@@ -240,4 +240,3 @@ int main() {
 
     return 0;
 }
-

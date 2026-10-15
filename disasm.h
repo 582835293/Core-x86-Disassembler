@@ -1,4 +1,4 @@
-// disasm.h
+﻿// disasm.h
 #pragma once
 #define _CRT_SECURE_NO_WARNINGS
 #define MAX_INSTRUCTION_LENGTH 15
@@ -133,6 +133,7 @@ typedef struct {
     int max_len;
     int pos;
     bool mode64;
+    int instr_len; // Instruction length consumed by the executor.
     uint32_t eip; // 当前指令的 EIP (用于计算相对跳转的绝对地址)
 
     // 前缀状态

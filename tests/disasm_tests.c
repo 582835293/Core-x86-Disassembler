@@ -1,4 +1,4 @@
-#include <stdio.h>
+﻿#include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -330,7 +330,19 @@ TEST(Test_Disassemble_end_to_end) {
     ASSERT_STREQ("PUSHA", ctx.asm_str);
 }
 
+TEST(Test_shared_executor_contract) {
+    uint8_t enter[] = {0xC8, 0x34, 0x12, 0x02};
+    DecodeContext ctx;
+    int len = ParseInstuction(enter, 0x4000, &ctx);
+    ASSERT_EQ_INT(4, len);
+    ASSERT_EQ_INT(len, ctx.instr_len);
+    ASSERT_STREQ("ENTER", ctx.entry.mnemonic);
+    ASSERT_EQ_INT(0x1234, ctx.imm);
+    ASSERT_EQ_INT(2, ctx.imm2);
+}
+
 static void RunAllTests(void) {
+    Test_shared_executor_contract();
     Test_GetRegisterName();
     Test_ParsePrefixes_basic();
     Test_ParsePrefixes_stop_on_non_prefix();

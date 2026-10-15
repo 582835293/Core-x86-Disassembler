@@ -1,32 +1,23 @@
-cmake_minimum_required(VERSION 3.10)
-
-project(X86DisassemblyEngine VERSION 1.0 LANGUAGES C)
-
-# Set C standard
-set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_STANDARD_REQUIRED True)
-
-# Disable MSVC specific warnings
+cmake_minimum_required(VERSION 3.20)
+project(CoreX86Disassembler VERSION 1.0.0 LANGUAGES C)
+add_library(core_x86 STATIC disasm.c)
+target_include_directories(core_x86 PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_compile_features(core_x86 PUBLIC c_std_99)
 if(MSVC)
-    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+  target_compile_options(core_x86 PUBLIC /utf-8)
 endif()
-
-# Source files
-set(SOURCES
-    "反汇编引擎.c"
-    "disasm.c"
-    "PETools.c"
-)
-
-# Header files
-set(HEADERS
-    "disasm.h"
-    "PETools.h"
-)
-
-# Add the executable
-add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-
-# Organize files into folders for IDEs (like Visual Studio)
-source_group("Source Files" FILES ${SOURCES})
-source_group("Header Files" FILES ${HEADERS})
+option(CORE_X86_BUILD_DEMO "Build Windows PE32 disassembler demo" ${PROJECT_IS_TOP_LEVEL})
+option(CORE_X86_BUILD_TESTS "Build decoder regression tests" ${PROJECT_IS_TOP_LEVEL})
+if(CORE_X86_BUILD_DEMO)
+  if(NOT TARGET petools)
+    add_subdirectory(deps/PETools EXCLUDE_FROM_ALL)
+  endif()
+  add_executable(X86DisassemblyEngine "反汇编引擎.c")
+  target_link_libraries(X86DisassemblyEngine PRIVATE core_x86 petools)
+endif()
+if(CORE_X86_BUILD_TESTS)
+  enable_testing()
+  add_executable(disasm_tests tests/disasm_tests.c)
+  target_link_libraries(disasm_tests PRIVATE core_x86)
+  add_test(NAME decoder_regression COMMAND disasm_tests)
+endif()
